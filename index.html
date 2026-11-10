@@ -1,0 +1,388 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Autism, Hearing & Vision Reviewer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lexend:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: a phone-first study column; a sticky mode bar (Notes, Cards, Match, Identify, Test) and a topic filter shared by every mode. Each topic keeps its own hue. */
+:root{
+  --bg:#F1F4F7; --surface:#FFFFFF; --sunk:#E4E9EF; --ink:#18212E; --muted:#58636F; --line:#CAD2DC;
+  --good:#22803A; --good-bg:#DDF1E1; --bad:#B42318; --bad-bg:#FBE2DF; --focus:#2F6FB0;
+  --asd:#6A4FB3; --asd-bg:#ECE7FA; --hear:#0E7584; --hear-bg:#DDF0F2; --vis:#A85A12; --vis-bg:#F8EAD9; --all:#18212E; --all-bg:#E4E9EF;
+  --font-display:"Lexend","Atkinson Hyperlegible",system-ui,sans-serif;
+  --font-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10161E; --surface:#18202B; --sunk:#222C39; --ink:#E7EBF0; --muted:#A3AEBB; --line:#334152;
+    --good:#7ED48E; --good-bg:#183222; --bad:#F4978E; --bad-bg:#3C1E1B; --focus:#8FB6E8;
+    --asd:#B8A4F2; --asd-bg:#2C2445; --hear:#5CC4D1; --hear-bg:#14343A; --vis:#E9A464; --vis-bg:#3A2A18; --all:#E7EBF0; --all-bg:#222C39;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10161E; --surface:#18202B; --sunk:#222C39; --ink:#E7EBF0; --muted:#A3AEBB; --line:#334152;
+  --good:#7ED48E; --good-bg:#183222; --bad:#F4978E; --bad-bg:#3C1E1B; --focus:#8FB6E8;
+  --asd:#B8A4F2; --asd-bg:#2C2445; --hear:#5CC4D1; --hear-bg:#14343A; --vis:#E9A464; --vis-bg:#3A2A18; --all:#E7EBF0; --all-bg:#222C39;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 1.0625rem/1.55 var(--font-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+h1,h2,h3,h4{font-family:var(--font-display);margin:0;line-height:1.2;text-wrap:balance}
+p{margin:0}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:8px}
+.col{max-width:820px;margin:0 auto}
+
+header.hero{padding-block:28px 14px;display:grid;gap:10px}
+header.hero h1{font-size:clamp(1.9rem,6vw,3rem);font-weight:700;letter-spacing:-.015em}
+header.hero p{color:var(--muted);max-width:60ch}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;display:grid;gap:8px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.modes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;background:var(--sunk);border-radius:12px;padding:4px}
+.modes button{border:0;background:transparent;border-radius:9px;padding:8px 4px;font-weight:700;font-size:.9rem;line-height:1.15}
+.modes button[aria-selected="true"]{background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.fbtn{border:2px solid var(--c);background:transparent;color:var(--ink);border-radius:999px;padding:4px 12px;font-weight:700;font-size:.88rem}
+.fbtn[aria-pressed="true"]{background:var(--c);color:var(--surface)}
+
+.view{display:none;padding-bottom:48px}
+.view.on{display:grid;gap:16px}
+.vh{display:grid;gap:4px}
+.vh h2{font-size:1.45rem}
+.vh p{color:var(--muted);font-size:.97rem}
+.card{background:var(--surface);border-radius:14px;border:1px solid var(--line);padding:18px;display:grid;gap:12px;min-width:0}
+.btn{border:0;background:var(--ink);color:var(--surface);border-radius:10px;padding:10px 16px;font-weight:700}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.4;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pill{font-size:.8rem;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--cbg);color:var(--c);justify-self:start}
+.muted{color:var(--muted)}
+.prog{height:8px;background:var(--sunk);border-radius:4px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--ink);transition:width .3s}
+.fb{padding:10px 12px;border-radius:8px;font-size:.97rem}
+.fb.good{background:var(--good-bg)}
+.fb.bad{background:var(--bad-bg)}
+
+/* notes */
+.topic{border-top:8px solid var(--c)}
+.topic h3{font-size:1.4rem;color:var(--c)}
+.key{background:var(--cbg);border-radius:10px;padding:10px 14px;font-size:.97rem}
+details{border-top:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;padding:12px 0;font-family:var(--font-display);font-weight:700;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--c);font-size:1.3rem;line-height:1}
+details[open] summary::after{content:"−"}
+.db{padding-bottom:12px}
+.db ul,.db ol{margin:0;padding-left:1.25em}
+.db li{margin:3px 0}
+.checkbox{display:flex;gap:8px;align-items:center;font-weight:700;font-size:.95rem}
+.checkbox input{width:20px;height:20px;accent-color:var(--c);flex:none}
+
+/* flashcards */
+.flip{perspective:1200px;min-height:240px;border:0;padding:0;background:none;text-align:center;width:100%}
+.flip .in{position:relative;width:100%;min-height:240px;transition:transform .5s;transform-style:preserve-3d}
+.flip.turned .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;padding:22px;display:grid;place-items:center;align-content:center;gap:10px;border:2px solid var(--c)}
+.face.front{background:var(--surface)}
+.face.back{background:var(--cbg);transform:rotateY(180deg)}
+.face .term{font-family:var(--font-display);font-weight:700;font-size:clamp(1.4rem,5vw,2rem)}
+.face .def{font-size:clamp(1rem,3.4vw,1.2rem);max-width:46ch}
+.face .hint{font-size:.85rem;color:var(--muted)}
+.counts{display:flex;gap:14px;font-size:.92rem;font-variant-numeric:tabular-nums}
+.counts b{font-family:var(--font-display)}
+
+/* match */
+.mgrid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:8px}
+.mcol{display:grid;gap:8px;align-content:start}
+.tile{border:2px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;text-align:left;font-size:.95rem;line-height:1.3;transition:background .2s,border-color .2s}
+.tile.term{font-weight:700}
+.tile.sel{border-color:var(--ink);background:var(--sunk)}
+.tile.ok{border-color:var(--good);background:var(--good-bg);cursor:default}
+.tile.miss{border-color:var(--bad);background:var(--bad-bg)}
+
+/* identify */
+.idq{font-family:var(--font-display);font-weight:500;font-size:1.15rem}
+.idin{display:flex;gap:8px;flex-wrap:wrap}
+.idin input{flex:1;min-width:0;border:2px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px}
+.idin input:focus{border-color:var(--ink);outline:none}
+
+/* test */
+.opt{border:2px solid var(--line);background:var(--surface);border-radius:10px;padding:11px 14px;text-align:left;line-height:1.35}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--good);background:var(--good-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.scen{background:var(--cbg);border-radius:10px;padding:12px 14px}
+.tq{font-family:var(--font-display);font-weight:500;font-size:1.12rem}
+.big{font-family:var(--font-display);font-weight:700;font-size:3rem;line-height:1;font-variant-numeric:tabular-nums}
+.bars{display:grid;gap:10px}
+.bars .r{display:grid;grid-template-columns:7.5em 1fr 3.5em;gap:10px;align-items:center;font-size:.95rem}
+.bars .t{height:12px;background:var(--sunk);border-radius:6px;overflow:hidden}
+.bars .t i{display:block;height:100%;background:var(--c)}
+.bars .v{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+@media (max-width:520px){.modes button{font-size:.8rem}.tile{font-size:.86rem;padding:8px 10px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<main class="col">
+  <header class="hero">
+    <h1>Autism, Hearing &amp; Vision Reviewer</h1>
+    <p>Study the notes, then test yourself five different ways. Your progress is saved on this device.</p>
+  </header>
+
+  <div class="bar">
+    <div class="modes" role="tablist" aria-label="Study mode" id="modes"></div>
+    <div class="filters" id="filters" aria-label="Topic filter"></div>
+  </div>
+
+  <section class="view" id="v-notes" aria-labelledby="t-notes"></section>
+  <section class="view" id="v-cards"></section>
+  <section class="view" id="v-match"></section>
+  <section class="view" id="v-id"></section>
+  <section class="view" id="v-test"></section>
+</main>
+
+<script>
+(function(){
+var store={get:function(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function cv(k){return "--c:var(--"+k+");--cbg:var(--"+k+"-bg)";}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var TN={asd:"Autism",hear:"Hearing",vis:"Vision"};
+var TF={asd:"Autism Spectrum Disorder",hear:"Deafness and Hearing Impairment",vis:"Visual Impairment"};
+
+/* ===================== CONTENT ===================== */
+var NOTES={
+asd:{dsm:"A DSM-5/DSM-5-TR diagnosis",
+ def:"A neurodevelopmental disorder with persistent differences or deficits in <b>social communication and social interaction</b> across contexts, together with <b>restricted or repetitive patterns of behavior, interests, or activities</b>. Features begin in early development and cause clinically significant impairment. Characteristics and support needs vary widely.",
+ key:"Asperger syndrome and PDD-NOS are no longer separate diagnoses; they were incorporated into ASD.",
+ types:"<p>Specifiers: with or without accompanying intellectual impairment; with or without accompanying language impairment; associated with a known medical/genetic condition or environmental factor; associated with another neurodevelopmental, mental, or behavioral condition.</p><p style='margin-top:8px'><b>Levels of support:</b> Level 1 = requiring support · Level 2 = requiring substantial support · Level 3 = requiring very substantial support. Levels do not replace individualized planning.</p>",
+ causes:"No single known cause. Research supports genetic and neurodevelopmental factors; some prenatal and perinatal factors are associated with likelihood. Autism is <b>not</b> caused by poor parenting or vaccines.",
+ chars:["Differences in social-emotional reciprocity","Differences in nonverbal communication (gestures, facial expressions, social cues)","Differences in developing, maintaining, or understanding relationships","Restricted or repetitive movements, speech, use of objects, or activity","Strong preference for routines; distress with unexpected change","Sensory hyperreactivity, hyporeactivity, or unusual sensory interests","Possible differences in language, learning, executive functioning, or adaptive skills"],
+ iv:["Predictable routines, visual schedules, first–then boards, advance notice of transitions","Clear, concrete instructions; check understanding without relying on implied meaning","Communication supports matched to the learner: speech, writing, gestures, picture systems, sign, or AAC","Sensory access: less noise and visual clutter, breaks, a calm space","Use the learner's interests to build engagement and teach new skills","Break multi-step tasks into smaller steps and model procedures","Teach social expectations explicitly where useful, without pressure to mask harmless autistic traits","Collaborate with the learner, family, and professionals"],
+ ex:"Before a schedule change, show the revised visual schedule, explain what will change, and give a clear transition cue."},
+hear:{dsm:"Not one DSM-5 diagnosis",
+ def:"Hearing loss is <b>reduced access to sound</b> that may affect communication and access to spoken information. Deafness may mean severe or profound hearing loss and, for some people, membership in a <b>Deaf community</b> that uses a sign language. Use the learner's preferred terms.",
+ key:"Educational impact depends on hearing profile, language access, communication preference, and the learning environment.",
+ types:"<ul><li><b>Conductive:</b> outer or middle ear</li><li><b>Sensorineural:</b> inner ear or auditory nerve pathways</li><li><b>Mixed:</b> conductive + sensorineural</li><li><b>Auditory neuropathy spectrum disorder:</b> atypical signal transmission or synchrony</li><li><b>Degree:</b> mild → moderate → moderately severe → severe → profound</li><li><b>Onset:</b> congenital/early-onset or acquired</li></ul>",
+ causes:"Genetic or congenital conditions, prenatal infections, prematurity or birth complications, chronic middle-ear disease, head injury, harmful noise, and medications that can damage hearing. Some cases have no known cause.",
+ chars:["May miss oral directions, comments, or announcements, especially from a distance","Difficulty following discussion in noise or when several people talk","May use sign language, spoken language, captions, writing, speech-reading, hearing technology, or a mix","Spoken-language development may be affected without consistent access to an accessible language; this is not inevitable","May need extra processing time when listening demands are high"],
+ iv:["Make sure the learner can see the teacher, interpreter, and classmates; don't talk while facing away","Provide communication access: interpretation, captions, written directions, assistive listening technology","Reduce background noise; set turn-taking rules for discussion","Use accurate captions and transcripts for videos","Pre-teach key vocabulary; give written summaries and visual supports","Check understanding by having the learner explain or demonstrate, not with yes/no questions","Make alerts and emergency procedures accessible (visual alerts)","Coordinate with the learner, family, teacher of the deaf, interpreter, and audiologist"],
+ ex:"Provide a captioned science video, written key terms, a clear view of the speaker, and the agreed communication support."},
+vis:{dsm:"Not one DSM-5 diagnosis",
+ def:"Reduced visual functioning that affects access to information or daily activities, including <b>low vision</b> and <b>blindness</b>. Planning considers functional vision, visual field, lighting, access to print, and the learner's preferred learning media.",
+ key:"Formats such as Braille, large print, or audio are chosen through individual assessment, not by label.",
+ types:"<ul><li><b>Low vision:</b> some usable vision; may need adapted print, contrast, or lighting</li><li><b>Blindness:</b> vision very limited or not usable for some tasks; Braille, audio, or tactile media</li><li><b>Central vision loss:</b> reading detail, recognizing faces</li><li><b>Peripheral/visual-field loss:</b> awareness of surroundings, mobility</li><li><b>CVI (cerebral/cortical visual impairment):</b> visual processing linked to the brain's visual pathways</li></ul>",
+ causes:"Congenital or genetic eye conditions, retinopathy of prematurity, cataracts, glaucoma, retinal or optic nerve disorders, eye injuries, infections, and neurological conditions affecting visual processing.",
+ chars:["Difficulty reading standard print, copying from the board, or seeing distant details","May benefit from magnification, large print, high contrast, accessible digital text, or Braille","Difficulty with diagrams, maps, charts, or demonstrations that are not described or adapted","May need more time to explore new spaces; may use orientation and mobility skills","Visual fatigue, glare sensitivity, or difficulty under certain lighting"],
+ iv:["Materials in the learner's format: Braille, large print, accessible digital text, audio","Describe pictures, diagrams, demonstrations, and board work aloud","Screen-reader-compatible documents with meaningful headings","Tactile diagrams, raised-line drawings, models, or real objects","Adjust lighting, glare, and contrast","Keep pathways clear; tell the learner before the room layout changes","Allow extra time for reading, tactile exploration, and assistive technology","Coordinate with vision and orientation and mobility specialists"],
+ ex:"For geometry, provide tactile shapes and accessible instructions, and describe each diagram instead of asking the learner to copy it from the board."}
+};
+
+var CARDS=[
+ ["asd","Autism Spectrum Disorder (ASD)","A neurodevelopmental disorder with differences in social communication/interaction plus restricted or repetitive behaviors, interests, or activities."],
+ ["asd","Asperger syndrome & PDD-NOS","No longer separate DSM-5 diagnoses; incorporated into ASD."],
+ ["asd","Level 1","Requiring support."],
+ ["asd","Level 2","Requiring substantial support."],
+ ["asd","Level 3","Requiring very substantial support."],
+ ["asd","Visual schedule","Shows the sequence of the day's activities with words, pictures, or symbols."],
+ ["asd","First–then board","Shows a required task first, then a preferred activity or reward."],
+ ["asd","Sensory hyperreactivity","Over-responding to sensory input, such as distress from loud noise."],
+ ["asd","Masking","Hiding or suppressing harmless autistic traits; teachers should avoid pressuring learners to do this."],
+ ["hear","Conductive hearing loss","Reduced sound transmission through the outer or middle ear."],
+ ["hear","Sensorineural hearing loss","Involves the inner ear or the auditory nerve pathways."],
+ ["hear","Mixed hearing loss","Has both conductive and sensorineural components."],
+ ["hear","Auditory neuropathy spectrum disorder","Auditory signal transmission or synchrony is atypical."],
+ ["hear","Degrees of hearing loss","Mild, moderate, moderately severe, severe, profound."],
+ ["hear","Deaf (capital D)","Can signal identity and membership in a Deaf community that uses a sign language."],
+ ["hear","Speech-reading","Understanding speech by watching the speaker's lips and face."],
+ ["hear","Visual alerts","Accessible alarms and signals, such as flashing lights, for emergencies."],
+ ["vis","Low vision","Some usable vision remains; may need adapted print, distance viewing, contrast, or lighting."],
+ ["vis","Blindness","Vision very limited or not functionally available for some tasks; may use Braille, audio, tactile media."],
+ ["vis","Central vision loss","Affects reading detail and recognizing faces."],
+ ["vis","Peripheral (visual-field) loss","Affects awareness of surrounding objects and mobility."],
+ ["vis","CVI","Cerebral/cortical visual impairment: visual processing difficulties linked to the brain's visual pathways."],
+ ["vis","Orientation and mobility (O&M)","Skills for knowing where you are and moving safely through spaces."],
+ ["vis","Tactile diagram","A raised-line drawing that can be explored by touch."],
+ ["vis","Screen reader","Software that reads on-screen text aloud; needs real text, not images of text."]
+];
+
+var MATCH={
+ asd:[["Level 1","Requiring support"],["Level 2","Requiring substantial support"],["Level 3","Requiring very substantial support"],["Visual schedule","Shows the day's activities in order"],["Transition cue","Advance signal that an activity will change"]],
+ hear:[["Conductive","Outer or middle ear"],["Sensorineural","Inner ear or auditory nerve"],["Mixed","Conductive + sensorineural"],["ANSD","Signal transmission or synchrony is atypical"],["Profound","The most severe degree of hearing loss"]],
+ vis:[["Low vision","Some usable vision; may need large print or contrast"],["Blindness","May use Braille, audio, or tactile media"],["Central loss","Trouble with reading detail and faces"],["Peripheral loss","Trouble noticing objects to the side"],["CVI","Linked to the brain's visual pathways"]]
+};
+
+var IDS=[
+ ["asd","The DSM-5 diagnosis that now includes what used to be called Asperger syndrome and PDD-NOS.",["autism spectrum disorder","asd","autism"],"Autism Spectrum Disorder"],
+ ["asd","The DSM-5 support level described as “requiring substantial support.”",["level 2","2","level two","two"],"Level 2"],
+ ["asd","A board that shows a required task followed by a preferred activity.",["first-then board","first then board","first-then","first then","firstthen board","firstthen"],"First–then board"],
+ ["asd","Over-responding to sensory input, such as becoming distressed by loud noise.",["sensory hyperreactivity","hyperreactivity","hypersensitivity","sensory hypersensitivity"],"Sensory hyperreactivity"],
+ ["asd","A tool that shows the day's activities in order using words, pictures, or symbols.",["visual schedule","picture schedule","visual schedules"],"Visual schedule"],
+ ["hear","Type of hearing loss involving the outer or middle ear.",["conductive","conductive hearing loss"],"Conductive"],
+ ["hear","Type of hearing loss involving the inner ear or auditory nerve pathways.",["sensorineural","sensorineural hearing loss","sensori-neural"],"Sensorineural"],
+ ["hear","Type of hearing loss with both conductive and sensorineural components.",["mixed","mixed hearing loss"],"Mixed"],
+ ["hear","The most severe degree of hearing loss.",["profound","profound hearing loss"],"Profound"],
+ ["hear","Understanding speech by watching the speaker's lips and face.",["speech-reading","speechreading","speech reading","lip reading","lipreading","lip-reading"],"Speech-reading"],
+ ["vis","Visual impairment linked to the brain's visual pathways (give the abbreviation or full name).",["cvi","cerebral visual impairment","cortical visual impairment","cerebral/cortical visual impairment"],"CVI"],
+ ["vis","Vision loss that mainly affects awareness of objects to the side and mobility.",["peripheral","peripheral loss","peripheral vision loss","visual-field loss","visual field loss","field loss","peripheral field loss"],"Peripheral (visual-field) loss"],
+ ["vis","A reading and writing system of raised dots read by touch.",["braille"],"Braille"],
+ ["vis","Software that reads on-screen text aloud.",["screen reader","screenreader","screen-reader"],"Screen reader"],
+ ["vis","Reduced but usable vision that may need adapted print, contrast, or lighting.",["low vision"],"Low vision"]
+];
+
+/* Practice test: correct option first; options are shuffled when shown */
+var TEST=[
+ {k:"asd",q:"Which of these is NOT a DSM-5 specifier for Autism Spectrum Disorder?",o:["With or without accompanying giftedness","With or without accompanying intellectual impairment","With or without accompanying language impairment","Associated with a known medical/genetic condition or environmental factor"],e:"The four specifiers involve intellectual impairment, language impairment, a known medical/genetic condition or environmental factor, and another neurodevelopmental, mental, or behavioral condition."},
+ {k:"asd",q:"An autistic learner at Level 1 is described as…",o:["requiring support","requiring substantial support","requiring very substantial support","not requiring any support"],e:"Level 1 = requiring support; Level 2 = substantial; Level 3 = very substantial."},
+ {k:"asd",sc:"During independent work, Nico, an autistic learner, flaps his hands while he concentrates. It does not disturb anyone, but some classmates stare.",q:"What is the most appropriate response?",o:["Respect the harmless behavior and help classmates understand differences","Tell Nico to keep his hands still so he looks like the others","Move Nico to a desk at the back of the room","Reward Nico each time he stops flapping"],e:"Teach social expectations where useful, but avoid pressuring learners to mask harmless autistic traits."},
+ {k:"asd",sc:"Rina is autistic and speaks very little. At home she communicates well using a picture-exchange system.",q:"What should her teacher do?",o:["Use the picture system in class as one of Rina's communication supports","Remove the pictures so Rina is pushed to speak more","Only accept spoken answers so she is treated like everyone else","Let Rina skip activities that need communication"],e:"Offer communication supports matched to the learner, including picture systems or AAC."},
+ {k:"asd",sc:"The science lab has eight steps written in one long paragraph. Leo, an autistic learner, freezes at the start.",q:"Which support fits best?",o:["Break the procedure into smaller steps and model each one","Tell Leo to read the paragraph again more carefully","Pair Leo with a classmate who will do the lab for him","Give Leo extra time but keep the paragraph as it is"],e:"Breaking multi-step tasks into smaller steps and modeling procedures is a recommended intervention."},
+ {k:"hear",q:"Which list shows the degrees of hearing loss from least to most severe?",o:["Mild, moderate, moderately severe, severe, profound","Mild, moderate, severe, moderately severe, profound","Moderate, mild, severe, profound, moderately severe","Profound, severe, moderately severe, moderate, mild"],e:"The order is mild, moderate, moderately severe, severe, profound."},
+ {k:"hear",q:"Which of these is NOT listed in the notes as a cause of hearing loss?",o:["Sitting too close to the front of the classroom","Chronic middle-ear disease","Exposure to harmful noise","Medications that can damage hearing"],e:"Listed causes include genetic conditions, prenatal infections, prematurity, middle-ear disease, head injury, harmful noise, and certain medications."},
+ {k:"hear",sc:"Small-group discussions in your class get loud, and several students talk at once. Tess, who is hard of hearing, stops participating.",q:"What should you do?",o:["Reduce background noise and set clear turn-taking rules","Ask Tess to sit in the middle of the loudest group","Let Tess write a report instead of joining discussions","Speak louder whenever you give instructions"],e:"Reducing unnecessary noise and establishing turn-taking supports access in group discussion."},
+ {k:"hear",sc:"A new science unit introduces many technical terms. Migs is Deaf and works with a sign-language interpreter.",q:"Which preparation helps most?",o:["Pre-teach the key vocabulary and give written summaries","Ask the interpreter to skip the technical terms","Give Migs the vocabulary list only after the test","Ask Migs to look the words up on his own"],e:"Pre-teaching key vocabulary and providing written summaries or visual supports are recommended."},
+ {k:"hear",sc:"Kaye, who is Deaf, uses an interpreter. During the lesson, the teacher walks around the room and stands in front of the bright window.",q:"What should the teacher keep in mind?",o:["Kaye must be able to see the teacher, interpreter, and classmates clearly","The interpreter can repeat anything Kaye misses after class","Standing in front of the window helps Kaye see the teacher better","Kaye only needs to see the interpreter, so position does not matter"],e:"Ensure the learner can see the teacher, interpreter, and relevant classmates. Backlighting from a window makes faces hard to see."},
+ {k:"vis",q:"Which statement about choosing formats for learners with visual impairment is accurate?",o:["Braille, large print, audio, or a combination is chosen through individual assessment","All learners with visual impairment should learn Braille","Large print works for every learner with low vision","Audio formats should be avoided because they reduce reading"],e:"Formats depend on individual assessment of functional vision and preferred learning media."},
+ {k:"vis",q:"A learner has central vision loss. Which task is likely to be hardest?",o:["Reading small details and recognizing faces","Noticing a chair to the side","Hearing directions in a noisy room","Walking through a clear hallway"],e:"Central loss affects reading detail and recognizing faces. Peripheral loss affects awareness of the surroundings."},
+ {k:"vis",sc:"In a chemistry demonstration, the teacher pours liquids into beakers and the color changes. Joy is blind.",q:"How should the teacher include Joy?",o:["Describe each step and the color change aloud as it happens","Tell Joy to ask a classmate what happened afterward","Excuse Joy because the lesson is visual","Hold the beakers closer to Joy's face"],e:"Describe pictures, demonstrations, and board content verbally."},
+ {k:"vis",sc:"Paolo, who has low vision, uses a screen reader and magnification software. He takes much longer than classmates to finish reading-heavy tests.",q:"What is an appropriate support?",o:["Allow extra time for reading and use of assistive technology","Give him an easier test with fewer competencies","Have him finish the test at home without his tools","Ask him to read faster to keep up with the class"],e:"Extra time for reading, tactile exploration, and assistive technology is recommended. An easier test would change the expectation."},
+ {k:"vis",sc:"Your social studies lesson uses a printed map of the Philippine regions. Bea is blind.",q:"Which material gives Bea access to the same content?",o:["A tactile or raised-line map with a verbal description","A larger printed copy of the same map","A list of regions to memorize instead","A photo of the map on a tablet"],e:"Tactile diagrams, raised-line drawings, and verbal descriptions give access to visual content."}
+];
+
+/* ===================== SHELL ===================== */
+var MODES=[["notes","Notes"],["cards","Cards"],["match","Match"],["id","Identify"],["test","Test"]];
+var mode=store.get("rv-mode")||"notes",topic=store.get("rv-topic")||"all";
+var modesEl=document.getElementById("modes"),filtersEl=document.getElementById("filters");
+MODES.forEach(function(m){var b=document.createElement("button");b.type="button";b.setAttribute("role","tab");b.textContent=m[1];b.dataset.m=m[0];b.onclick=function(){setMode(m[0])};modesEl.appendChild(b);});
+[["all","All topics"],["asd","Autism"],["hear","Hearing"],["vis","Vision"]].forEach(function(f){var b=document.createElement("button");b.type="button";b.className="fbtn";b.style.cssText=cv(f[0]);b.textContent=f[1];b.dataset.t=f[0];b.onclick=function(){topic=f[0];store.set("rv-topic",topic);renderAll();};filtersEl.appendChild(b);});
+function setMode(m){mode=m;store.set("rv-mode",m);
+  modesEl.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.m===m?"true":"false")});
+  document.querySelectorAll(".view").forEach(function(v){v.classList.toggle("on",v.id==="v-"+m)});}
+function inTopic(k){return topic==="all"||topic===k;}
+function topics(){return topic==="all"?["asd","hear","vis"]:[topic];}
+function renderAll(){filtersEl.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.t===topic?"true":"false")});
+  renderNotes();renderCards();renderMatch();renderId();renderTest();setMode(mode);}
+
+/* ===================== NOTES ===================== */
+var studied=store.get("rv-studied")||{};
+function renderNotes(){var v=document.getElementById("v-notes");
+  var html='<div class="vh"><h2 id="t-notes">Study notes</h2><p>Read one topic at a time. Open each heading, then tick the box when you are done.</p></div>';
+  topics().forEach(function(k){var n=NOTES[k];
+    html+='<article class="card topic" style="'+cv(k)+'"><span class="pill">'+n.dsm+'</span><h3>'+TF[k]+'</h3><p>'+n.def+'</p><p class="key"><b>Remember:</b> '+n.key+'</p>'+
+     '<div><details><summary>Types and classifications</summary><div class="db">'+n.types+'</div></details>'+
+     '<details><summary>Causes and associated factors</summary><div class="db"><p>'+n.causes+'</p></div></details>'+
+     '<details><summary>Characteristics</summary><div class="db"><ul>'+n.chars.map(function(c){return "<li>"+c+"</li>"}).join("")+'</ul></div></details>'+
+     '<details><summary>Classroom interventions</summary><div class="db"><ol>'+n.iv.map(function(c){return "<li>"+c+"</li>"}).join("")+'</ol><p class="key" style="margin-top:10px"><b>Classroom example:</b> '+n.ex+'</p></div></details></div>'+
+     '<label class="checkbox" for="st-'+k+'"><input type="checkbox" id="st-'+k+'"'+(studied[k]?" checked":"")+'> I have studied this topic</label></article>';});
+  html+='<p class="muted" style="font-size:.9rem">Teachers do not diagnose. The DSM-5 provides diagnostic criteria; classroom supports come from individual assessment and collaboration.</p>';
+  v.innerHTML=html;
+  topics().forEach(function(k){document.getElementById("st-"+k).onchange=function(){studied[k]=this.checked;store.set("rv-studied",studied);};});}
+
+/* ===================== FLASHCARDS ===================== */
+var known=store.get("rv-known")||{},deck=[],ci=0,onlyNew=false;
+function cardId(c){return c[0]+"|"+c[1];}
+function renderCards(){var v=document.getElementById("v-cards");
+  deck=CARDS.filter(function(c){return inTopic(c[0])&&(!onlyNew||!known[cardId(c)])});ci=0;
+  var tot=CARDS.filter(function(c){return inTopic(c[0])}).length,kn=CARDS.filter(function(c){return inTopic(c[0])&&known[cardId(c)]}).length;
+  v.innerHTML='<div class="vh"><h2>Flashcards</h2><p>Tap the card to flip it. Mark each one so you know what to review again.</p></div>'+
+   '<div class="counts"><span><b>'+kn+'</b> of '+tot+' known</span><span id="cpos"></span></div><div class="prog"><i style="width:'+(tot?kn/tot*100:0)+'%"></i></div>'+
+   '<div id="cardbox"></div>'+
+   '<div class="row"><button class="btn ghost" type="button" id="cPrev">← Previous</button><button class="btn ghost" type="button" id="cAgain">Review again</button><button class="btn" type="button" id="cGot">I know this</button><button class="btn ghost" type="button" id="cNext">Next →</button></div>'+
+   '<div class="row"><label class="checkbox" for="onlyNew"><input type="checkbox" id="onlyNew"'+(onlyNew?" checked":"")+'> Show only cards I don\'t know yet</label><button class="btn ghost" type="button" id="cShuf">Shuffle</button><button class="btn ghost" type="button" id="cReset">Reset progress</button></div>';
+  document.getElementById("cPrev").onclick=function(){if(ci>0){ci--;drawCard();}};
+  document.getElementById("cNext").onclick=function(){if(ci<deck.length-1){ci++;drawCard();}};
+  document.getElementById("cGot").onclick=function(){mark(true)};document.getElementById("cAgain").onclick=function(){mark(false)};
+  document.getElementById("onlyNew").onchange=function(){onlyNew=this.checked;renderCards();};
+  document.getElementById("cShuf").onclick=function(){deck=shuffle(deck);ci=0;drawCard();};
+  document.getElementById("cReset").onclick=function(){CARDS.forEach(function(c){if(inTopic(c[0]))delete known[cardId(c)]});store.set("rv-known",known);renderCards();};
+  drawCard();}
+function drawCard(){var box=document.getElementById("cardbox");if(!box)return;
+  if(!deck.length){box.innerHTML='<div class="card"><p><b>All cards in this topic are marked as known.</b> Untick “Show only cards I don\'t know yet” to review them all.</p></div>';document.getElementById("cpos").textContent="";return;}
+  var c=deck[ci];
+  box.innerHTML='<button class="flip" type="button" id="flip" style="'+cv(c[0])+'" aria-label="Flashcard. Tap to flip."><div class="in"><div class="face front"><span class="pill">'+TN[c[0]]+'</span><div class="term">'+esc(c[1])+'</div><div class="hint">Tap to see the meaning</div></div><div class="face back"><span class="pill">'+esc(c[1])+'</span><div class="def">'+esc(c[2])+'</div><div class="hint">'+(known[cardId(c)]?"Marked as known":"Tap to flip back")+'</div></div></div></button>';
+  document.getElementById("flip").onclick=function(){this.classList.toggle("turned")};
+  document.getElementById("cpos").textContent="Card "+(ci+1)+" of "+deck.length;}
+function mark(k){if(!deck.length)return;var c=deck[ci];if(k)known[cardId(c)]=true;else delete known[cardId(c)];store.set("rv-known",known);
+  var keep=ci;var wasOnly=onlyNew;renderCards();if(!wasOnly)ci=Math.min(keep+1,deck.length-1);else ci=Math.min(keep,deck.length-1);if(ci<0)ci=0;drawCard();}
+
+/* ===================== MATCH ===================== */
+var mSet,mSel=null,mDone=0,mMiss=0;
+function renderMatch(){var v=document.getElementById("v-match");
+  var pairs=[];topics().forEach(function(k){MATCH[k].forEach(function(p){pairs.push([k,p[0],p[1]])})});
+  if(topic==="all")pairs=shuffle(pairs).slice(0,6);
+  mSet=pairs;mSel=null;mDone=0;mMiss=0;
+  v.innerHTML='<div class="vh"><h2>Match-up</h2><p>Tap a term, then tap its meaning.'+(topic==="all"?" Each round mixes six pairs from all three topics.":"")+'</p></div>'+
+   '<div class="card"><div class="mgrid"><div class="mcol" id="mt"></div><div class="mcol" id="md"></div></div><p id="mmsg" class="muted" aria-live="polite"></p><div class="row"><button class="btn" type="button" id="mNew">New round</button></div></div>';
+  var mt=document.getElementById("mt"),md=document.getElementById("md");
+  shuffle(pairs.map(function(p,i){return i})).forEach(function(i){var b=document.createElement("button");b.type="button";b.className="tile term";b.textContent=pairs[i][1];b.dataset.i=i;b.onclick=function(){selTerm(b)};mt.appendChild(b);});
+  shuffle(pairs.map(function(p,i){return i})).forEach(function(i){var b=document.createElement("button");b.type="button";b.className="tile";b.textContent=pairs[i][2];b.dataset.i=i;b.onclick=function(){selDef(b)};md.appendChild(b);});
+  document.getElementById("mNew").onclick=renderMatch;}
+function selTerm(b){if(b.classList.contains("ok"))return;document.querySelectorAll("#mt .tile").forEach(function(t){t.classList.remove("sel")});b.classList.add("sel");mSel=b;}
+function selDef(b){if(b.classList.contains("ok"))return;var msg=document.getElementById("mmsg");
+  if(!mSel){msg.textContent="Tap a term first.";return;}
+  if(mSel.dataset.i===b.dataset.i){mSel.classList.remove("sel");mSel.classList.add("ok");b.classList.add("ok");mSel.disabled=true;b.disabled=true;mSel=null;mDone++;
+    msg.textContent=mDone===mSet.length?"All matched with "+mMiss+" wrong tr"+(mMiss===1?"y":"ies")+". Tap New round to play again.":"Correct! "+(mSet.length-mDone)+" left.";}
+  else{mMiss++;b.classList.add("miss");setTimeout(function(){b.classList.remove("miss")},600);msg.textContent="Not a match. Try another meaning.";}}
+
+/* ===================== IDENTIFY ===================== */
+var idList=[],idI=0,idScore=0,idDone=false;
+function norm(s){return s.toLowerCase().replace(/[’'".,!?()]/g,"").replace(/[–—]/g,"-").replace(/\s+/g," ").trim();}
+function renderId(){var v=document.getElementById("v-id");
+  idList=shuffle(IDS.filter(function(x){return inTopic(x[0])}));idI=0;idScore=0;
+  v.innerHTML='<div class="vh"><h2>Identification</h2><p>Type the term that matches each description. Spelling counts, but small variations are accepted.</p></div><div id="idbox"></div>';
+  drawId();}
+function drawId(){var box=document.getElementById("idbox");
+  if(idI>=idList.length){box.innerHTML='<div class="card"><div class="big">'+idScore+' / '+idList.length+'</div><p>'+(idScore===idList.length?"Perfect! You know your terms.":"Review the cards you missed in Flashcards, then try again.")+'</p><div class="row"><button class="btn" type="button" id="idAgain">Try again</button></div></div>';document.getElementById("idAgain").onclick=renderId;return;}
+  var x=idList[idI];idDone=false;
+  box.innerHTML='<div class="card" style="'+cv(x[0])+'"><div class="row"><span class="pill">'+TN[x[0]]+'</span><span class="muted" style="font-size:.9rem">Item '+(idI+1)+' of '+idList.length+' · Score '+idScore+'</span></div>'+
+   '<p class="idq">'+esc(x[1])+'</p><form class="idin" id="idf"><label for="idans" class="muted" style="position:absolute;left:-9999px">Your answer</label><input id="idans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type your answer"><button class="btn" type="submit" id="idCheck">Check</button></form>'+
+   '<div id="idfb" aria-live="polite"></div><div class="row"><button class="btn ghost" type="button" id="idShow">Show answer</button><button class="btn ghost" type="button" id="idNext" hidden>Next →</button></div></div>';
+  var inp=document.getElementById("idans");try{inp.focus({preventScroll:true})}catch(e){}
+  document.getElementById("idf").addEventListener("submit",function(e){e.preventDefault();if(idDone){next();return;}
+    var a=norm(inp.value);if(!a)return;var ok=x[2].some(function(t){return norm(t)===a});var fb=document.getElementById("idfb");
+    if(ok){idScore++;idDone=true;fb.innerHTML='<p class="fb good"><b>Correct!</b> '+esc(x[3])+'</p>';finish();}
+    else{fb.innerHTML='<p class="fb bad"><b>Not quite.</b> Check your spelling, try again, or tap Show answer.</p>';}});
+  document.getElementById("idShow").onclick=function(){if(idDone)return;idDone=true;document.getElementById("idfb").innerHTML='<p class="fb bad"><b>Answer:</b> '+esc(x[3])+'</p>';finish();};
+  function finish(){document.getElementById("idShow").hidden=true;var n=document.getElementById("idNext");n.hidden=false;n.onclick=next;inp.disabled=true;document.getElementById("idCheck").textContent="Next →";document.getElementById("idCheck").disabled=false;inp.disabled=true;}
+  function next(){idI++;drawId();}}
+
+/* ===================== PRACTICE TEST ===================== */
+var tList=[],tI=0,tRes=[],tFirst=true;
+function renderTest(){var v=document.getElementById("v-test");
+  var best=store.get("rv-best")||{};var bk=topic;
+  v.innerHTML='<div class="vh"><h2>Practice test</h2><p>Multiple choice with classroom situations. Answer each item to see if you are right and why.'+(best[bk]!=null?" Your best score here: "+best[bk]+"%.":"")+'</p></div><div id="tbox"></div>';
+  tList=shuffle(TEST.filter(function(q){return inTopic(q.k)})).map(function(q){var o=q.o.map(function(t,i){return {t:t,c:i===0}});return {k:q.k,sc:q.sc,q:q.q,o:shuffle(o),e:q.e};});
+  tI=0;tRes=[];drawTest();}
+function drawTest(){var box=document.getElementById("tbox");
+  if(tI>=tList.length){var right=tRes.filter(Boolean).length,pct=Math.round(right/tList.length*100);
+    var best=store.get("rv-best")||{};if(best[topic]==null||pct>best[topic]){best[topic]=pct;store.set("rv-best",best);}
+    var by={};tList.forEach(function(q,i){by[q.k]=by[q.k]||[0,0];by[q.k][1]++;if(tRes[i])by[q.k][0]++;});
+    var weak=Object.keys(by).filter(function(k){return by[k][0]/by[k][1]<.8});
+    box.innerHTML='<div class="card"><div class="big">'+right+' / '+tList.length+'</div><p>'+pct+'% on first tries.</p><div class="bars">'+Object.keys(by).map(function(k){var p=Math.round(by[k][0]/by[k][1]*100);return '<div class="r" style="'+cv(k)+'"><span>'+TN[k]+'</span><span class="t"><i style="width:'+p+'%"></i></span><span class="v">'+by[k][0]+'/'+by[k][1]+'</span></div>'}).join("")+'</div>'+
+     '<p>'+(weak.length?"Review next: <b>"+weak.map(function(k){return TN[k]}).join(", ")+"</b>. Reread the notes and practice the flashcards for "+(weak.length>1?"these topics.":"this topic."):"Great work across the board. Try the Identification drill to lock in the terms.")+'</p><div class="row"><button class="btn" type="button" id="tAgain">Retake test</button>'+(weak.length?'<button class="btn ghost" type="button" id="tWeak">Study '+TN[weak[0]]+' notes</button>':'')+'</div></div>';
+    document.getElementById("tAgain").onclick=renderTest;
+    if(weak.length)document.getElementById("tWeak").onclick=function(){topic=weak[0];store.set("rv-topic",topic);mode="notes";renderAll();window.scrollTo({top:0,behavior:"smooth"});};
+    return;}
+  var q=tList[tI];tFirst=true;
+  box.innerHTML='<div class="prog" style="margin-bottom:12px"><i style="width:'+(tI/tList.length*100)+'%"></i></div>'+
+   '<div class="card" style="'+cv(q.k)+'"><div class="row"><span class="pill">'+TN[q.k]+(q.sc?" · Situational":"")+'</span><span class="muted" style="font-size:.9rem">Question '+(tI+1)+' of '+tList.length+'</span></div>'+
+   (q.sc?'<p class="scen">'+esc(q.sc)+'</p>':'')+'<p class="tq">'+esc(q.q)+'</p><div class="row" style="display:grid;gap:8px" id="topts"></div><div id="tfb" aria-live="polite"></div><div><button class="btn" type="button" id="tNext" hidden>'+(tI===tList.length-1?"See results":"Next →")+'</button></div></div>';
+  var opts=document.getElementById("topts");
+  q.o.forEach(function(o){var b=document.createElement("button");b.type="button";b.className="opt";b.textContent=o.t;
+    b.onclick=function(){if(tFirst){tRes[tI]=o.c;tFirst=false;}
+      if(o.c){b.classList.add("right");opts.querySelectorAll(".opt").forEach(function(x){x.disabled=true});document.getElementById("tfb").innerHTML='<p class="fb good"><b>Correct.</b> '+esc(q.e)+'</p>';document.getElementById("tNext").hidden=false;}
+      else{b.classList.add("wrong");b.disabled=true;document.getElementById("tfb").innerHTML='<p class="fb bad"><b>Not quite.</b> Try another answer.</p>';}};
+    opts.appendChild(b);});
+  document.getElementById("tNext").onclick=function(){tI++;drawTest();document.getElementById("v-test").scrollIntoView({behavior:"smooth",block:"start"});};}
+
+renderAll();
+})();
+</script>
+
+</body></html>
